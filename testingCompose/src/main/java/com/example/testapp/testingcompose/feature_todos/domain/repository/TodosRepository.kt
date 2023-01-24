@@ -4,11 +4,11 @@ import com.example.testapp.core.persistence.todo.Todo
 import kotlinx.coroutines.flow.Flow
 
 interface TodosRepository {
-    fun getTodos(): Flow<List<com.example.testapp.core.persistence.todo.Todo>>
+    fun getTodos(): Flow<List<Todo>>
 
-    fun getTodoById(id: Int): com.example.testapp.core.persistence.todo.Todo?
+    fun getTodoById(id: Int): Todo?
 
-    fun insertTodo(todo: com.example.testapp.core.persistence.todo.Todo)
+    fun insertTodo(todo: Todo)
 
-    fun deleteTodo(todo: com.example.testapp.core.persistence.todo.Todo)
+    fun deleteTodo(todo: Todo)
 }

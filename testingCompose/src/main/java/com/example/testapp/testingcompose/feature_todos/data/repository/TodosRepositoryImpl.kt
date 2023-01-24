@@ -9,18 +9,18 @@ class TodosRepositoryImpl(
     val todoDao: TodoDao
 ): TodosRepository {
     override fun getTodos(): Flow<List<Todo>> {
-        TODO("Not yet implemented")
+        return todoDao.getTodos()
     }
 
     override fun getTodoById(id: Int): Todo? {
-        TODO("Not yet implemented")
+        return todoDao.getTodoById(id)
     }
 
     override fun insertTodo(todo: Todo) {
-        TODO("Not yet implemented")
+        todo.id = todoDao.insertTodo(todo).toInt()
     }
 
     override fun deleteTodo(todo: Todo) {
-        TODO("Not yet implemented")
+        todoDao.deleteTodo(todo)
     }
 }
