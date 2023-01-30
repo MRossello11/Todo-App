@@ -1,43 +1,61 @@
 package com.example.testapp.testingcompose.feature_todos.presentation.todos
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import android.annotation.SuppressLint
+import androidx.compose.animation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import com.example.testapp.testingcompose.common.Screen
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.testapp.testingcompose.feature_todos.presentation.todos.components.TodoItem
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@ExperimentalAnimationApi
 @Composable
 fun TodosScreen(
     navController: NavController,
     viewModel: TodosViewModel = hiltViewModel()
 ){
     val state = viewModel.state.value
-
-    Row() {
-
-        Button(
-            onClick = {
-                navController.navigate(
-                    Screen.TodoScreen.route +
-                            "?id=${state.query}"
-                )
-            }
-        ) {
-            Text(text = "Hello")
-        }
+    val scaffoldState = rememberScaffoldState()
+    viewModel.onEvent(TodosEvent.Query(""))
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(text = "Todos") //todo resource
     }
 
-    Row(){
-        TextField(
-            value = "A",
-            onValueChange = {
-                viewModel.onEvent(TodosEvent.Query(it))
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Scaffold(
+            floatingActionButton = {
+                // TODO add todo item
+            },
+            scaffoldState = scaffoldState
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ){
+                    items(state.todos) { todo ->
+                        TodoItem(
+                            todo = todo,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            onDeleteClick = { viewModel.onEvent(TodosEvent.DeleteTodo(todo)) }
+                        )
+                    }
+                }
             }
-        )
+        }
     }
 }
